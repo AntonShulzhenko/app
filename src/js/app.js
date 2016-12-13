@@ -1,6 +1,4 @@
-console.log('Hello World!');
-console.log(
-  templates.main({
-    name: 'John'
-  })
-);
+document.getElementById('main').innerHTML = templates.main({
+  name: 'John',
+  age: 31
+});
