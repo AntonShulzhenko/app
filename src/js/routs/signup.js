@@ -1,0 +1,3 @@
+function signup() {
+  render('signup');
+}
