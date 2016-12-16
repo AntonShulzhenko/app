@@ -1,4 +1,2 @@
-document.getElementById('main').innerHTML = templates.main({
-  name: 'John',
-  age: 31
-});
+console.log('Hello world!!!');
+document.getElementById('root').innerHTML = templates['main']();
