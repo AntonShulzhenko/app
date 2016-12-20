@@ -1,29 +1,77 @@
-function signup() {
+function signup(ctx, next) {
+  if (ctx.user) {
+    return page.redirect('/profile');
+  }
+
   render('signup');
 
-  let form = document.getElementById('signup-form');
-  let {email, password, passwordConfirm} = form;
+  const signupForm      = document.forms['signup-form'];
+  const errorsContainer = qs('#errors', signupForm);
+  const auth            = firebase.auth();
 
-  form.addEventListener('submit', submitHandler);
+  function renderErrors(errors = []) {
+    return errors.map(err => {
+      return `
+        <li class="list-group-item list-group-item-danger">
+          <span>${err}</span>
+        </li>
+      `;
+    }).join('');
+  }
 
-  // 1. Нет обработки серверных ошибок
-  // 2. Нет обработки случая, когда пользователь успешно создан
-  // 3. Нет информативности в ошибках при клиентской валидации
+  function showErrors(errors = []) {
+    errorsContainer.innerHTML = renderErrors(errors);
+    errorsContainer.hidden = false;
+  }
 
-  function submitHandler(event) {
-    let emailValue = email.value;
-    let passwordValue = password.value;
-    let passwordConfirmValue = passwordConfirm.value;
+  function hideErrors() {
+    errorsContainer.hidden = true;
+    errorsContainer.innerHTML = '';
+  }
 
-    if((emailValue.indexOf('@') === -1) || (emailValue.indexOf('.') === -1) || passwordValue.length < 6 || (passwordConfirmValue !== passwordValue)) {
-      alert('Error');
-    } else {
-      firebase.auth().createUserWithEmailAndPassword(emailValue, passwordValue)
-        .catch(function(error) {
-          alert(error.message);
-        });
+  function onUserCreated(user) {
+    // const usersRef = firebase.database().ref(`users/${user.uid}`);
+    // const userData = pick(user, ['uid', 'email', 'displayName', 'photoURL']);
+    // usersRef.set(userData)
+    //   .then(() => {
+    //     user.sendEmailVerification();
+    //     page('/profile');
+    //   });
+    console.log('Success');
+  }
+
+  function onUserCreationError(error) {
+    // unsetLoadingState();
+    showError(error.message);
+  }
+
+  function handler(e) {
+    const form = e.target;
+    const { email, password, password_confirm } = form.elements;
+    const errors = [];
+
+    if (email.value.indexOf('@') === -1) {
+      errors.push('Email is invalid');
     }
 
-    event.preventDefault();
+    if (!password.value.length) {
+      errors.push('Please enter password');
+    } else if (password.value !== password_confirm.value) {
+      errors.push('Password is incorrect');
+    }
+
+    if (errors.length) {
+      return showErrors(errors);
+    }
+
+    hideErrors();
+    auth
+      .createUserWithEmailAndPassword(email.value, password.value)
+      .then(onUserCreated)
+      .catch(onUserCreationError);
+
+    e.preventDefault();
   }
+
+  signupForm.addEventListener('submit', handler);
 }
