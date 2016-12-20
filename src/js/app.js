@@ -1,6 +1,5 @@
+'use strict';
 (() => {
-  //=require 'routs/*.js'
-
   // Firebase Initialization
   const firebaseConfig = {
     apiKey: 'AIzaSyDDhvBn7pjXjh0I8o5SuKOhN4s7I_p0wZ8',
@@ -9,16 +8,39 @@
     storageBucket: 'insta-294e1.appspot.com',
     messagingSenderId: '230889605114'
   };
+
   firebase.initializeApp(firebaseConfig);
 
-  const rootElement = document.getElementById('root');
+  //=require 'lib/*.js'
+  //=require 'middlewares/*.js'
+  //=require 'routs/*.js'
 
+  const { location, history, templates } = window;
+  const rootElement = qs('#root');
+
+  function render(tplName, data = {}) {
+    const user = firebase.auth().currentUser;
+    const userData = user ? user.toJSON() : null;
+    data = Object.assign(data, { user: userData });
+    rootElement.innerHTML = templates[tplName](data);
+  }
+
+  function render404() {
+    render('404');
+  }
+
+  page('*', auth);
   page('/', main);
   page('/login', login);
+  page('/logout', logout);
   page('/signup', signup);
-  page();
+  page('*', render404);
 
-  function render(tplName, ctx = {}) {
-    rootElement.innerHTML = templates[tplName](ctx);
-  }
+  render('preloader');
+
+  // simulate firebase 'onready' behavior
+  const unsubsribe = firebase.auth().onAuthStateChanged(() => {
+    page();
+    unsubsribe();
+  });
 })();
