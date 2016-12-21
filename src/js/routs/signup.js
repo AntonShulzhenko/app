@@ -7,6 +7,7 @@ function signup(ctx, next) {
 
   const signupForm      = document.forms['signup-form'];
   const errorsContainer = qs('#errors', signupForm);
+  const submitBtn       = qs('.btn', signupForm);
   const auth            = firebase.auth();
 
   function renderErrors(errors = []) {
@@ -29,6 +30,16 @@ function signup(ctx, next) {
     errorsContainer.innerHTML = '';
   }
 
+  function setLoadingState() {
+    signupForm.classList.add('is-loading');
+    submitBtn.disabled = true;
+  }
+
+  function unsetLoadingState() {
+    signupForm.classList.remove('is-loading');
+    submitBtn.disabled = false;
+  }
+
   function onUserCreated(user) {
     // const usersRef = firebase.database().ref(`users/${user.uid}`);
     // const userData = pick(user, ['uid', 'email', 'displayName', 'photoURL']);
@@ -38,11 +49,12 @@ function signup(ctx, next) {
     //     page('/profile');
     //   });
     console.log('Success');
+    return page.redirect('/temp');
   }
 
   function onUserCreationError(error) {
-    // unsetLoadingState();
-    showError(error.message);
+    unsetLoadingState();
+    showErrors(new Array(error.message));
   }
 
   function handler(e) {
@@ -60,6 +72,8 @@ function signup(ctx, next) {
       errors.push('Password is incorrect');
     }
 
+    e.preventDefault();
+
     if (errors.length) {
       return showErrors(errors);
     }
@@ -70,7 +84,7 @@ function signup(ctx, next) {
       .then(onUserCreated)
       .catch(onUserCreationError);
 
-    e.preventDefault();
+    setLoadingState();
   }
 
   signupForm.addEventListener('submit', handler);
