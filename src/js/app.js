@@ -12,8 +12,9 @@
   firebase.initializeApp(firebaseConfig);
 
   //=require 'lib/*.js'
+  //=require 'classes/*.js'
   //=require 'middlewares/*.js'
-  //=require 'routs/*.js'
+  //=require 'routes/*.js'
 
   const { location, history, templates } = window;
   const rootElement = qs('#root');
