@@ -7,11 +7,10 @@ function signup(ctx, next) {
 
   const signupForm      = document.forms['signup-form'];
   const errorsContainer = qs('#errors', signupForm);
-  const submitBtn       = qs('.btn', signupForm);
   const auth            = firebase.auth();
 
   function renderErrors(errors = []) {
-    return [].concat(errors).map(err => {
+    return errors.map(err => {
       return `
         <li class="list-group-item list-group-item-danger">
           <span>${err}</span>
@@ -30,31 +29,21 @@ function signup(ctx, next) {
     errorsContainer.innerHTML = '';
   }
 
-  function setLoadingState() {
-    signupForm.classList.add('is-loading');
-    submitBtn.setAttribute('disabled', 'disabled');
-  }
-
-  function unsetLoadingState() {
-    signupForm.classList.remove('is-loading');
-    submitBtn.removeAttribute('disabled');
-  }
-
   function onUserCreated(user) {
     // const usersRef = firebase.database().ref(`users/${user.uid}`);
     // const userData = pick(user, ['uid', 'email', 'displayName', 'photoURL']);
     // usersRef.set(userData)
     //   .then(() => {
     //     user.sendEmailVerification();
-    //     page('/profile');
+    //     page.redirect('/profile');
     //   });
-    console.log('Success');
-    return page.redirect('/temp');
+
+    page.redirect('/profile');
   }
 
   function onUserCreationError(error) {
-    unsetLoadingState();
-    showErrors(error.message);
+    // unsetLoadingState();
+    showError(error.message);
   }
 
   function handler(e) {
@@ -72,20 +61,17 @@ function signup(ctx, next) {
       errors.push('Password is incorrect');
     }
 
-    e.preventDefault();
-
     if (errors.length) {
       return showErrors(errors);
     }
 
     hideErrors();
-    setLoadingState();
-
     auth
       .createUserWithEmailAndPassword(email.value, password.value)
       .then(onUserCreated)
       .catch(onUserCreationError);
 
+    e.preventDefault();
   }
 
   signupForm.addEventListener('submit', handler);

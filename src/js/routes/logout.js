@@ -1,3 +1,3 @@
 function logout(ctx, next) {
-  render('logout');
+  firebase.auth().signOut().then(() => page.redirect('/'));
 }
