@@ -2,12 +2,12 @@ function login(ctx, next) {
   if (ctx.user) {
     return page.redirect('/profile');
   }
-  
+
   render('login');
 
   const loginForm = document.forms['login-form'];
   const { email, password } = loginForm.elements;
-  const emailFF    = new FormField(email.parentNode, {
+  const emailFF = new FormField(email.parentNode, {
     validate: [
       'required',
       'email',
@@ -38,7 +38,6 @@ function login(ctx, next) {
 
     emailFF.validate();
     passwordFF.validate();
-
 
     if(emailFF.isValid() && passwordFF.isValid()) {
       auth

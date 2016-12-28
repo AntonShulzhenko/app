@@ -137,7 +137,7 @@ const FormField = (function() {
         });
       }
 
-      if (typeof customValidator === 'function' && customValidator !== noop) {
+      if (typeof customValidator === 'function') {
         this.rules.push({
           name: 'custom',
           fn: customValidator
@@ -204,7 +204,7 @@ const FormField = (function() {
     validClass: 'has-success',
     errorElementClass: 'text-danger',
     control: 'input',
-    customValidator: noop,
+    customValidator: null,
     errorMessages: {},
     validate: null
   };
