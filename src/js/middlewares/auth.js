@@ -6,13 +6,12 @@ const unlockedPaths = [
 
 function auth(ctx, next) {
   const user = firebase.auth().currentUser;
-
-  if(user) {
+  // console.log(ctx, user);
+  if (user) {
     ctx.user = user.toJSON();
     return next();
-  } else if(!unlockedPaths.includes(ctx.pathname)) {
+  } else if (!unlockedPaths.includes(ctx.pathname)) {
     page.redirect('/login');
   }
-
   next();
 }

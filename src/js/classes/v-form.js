@@ -1,4 +1,5 @@
 const VForm = (function() {
+
   const call = (fn, ...args) => {
     if (typeof fn === 'function') {
       return fn(...args);
@@ -6,6 +7,7 @@ const VForm = (function() {
   };
 
   class VForm {
+
     constructor(form, props) {
       this.element = isDomElement(form) ? form : qs(form);
 
@@ -19,6 +21,7 @@ const VForm = (function() {
       )[0];
       this._setupFields();
       this._bindEvents();
+      // console.log(this);
     }
 
     validate() {
@@ -26,7 +29,8 @@ const VForm = (function() {
       const result = this.fields.map(f => f.validate());
 
       if (result.every(res => res === true)) {
-        call(onValid, this);
+        // call(onValid, this);
+        onValid();
         return true;
       }
 
@@ -34,7 +38,9 @@ const VForm = (function() {
         .reduce((acc, next) => acc.concat(next), [])
         .filter(val => val !== true);
 
-      call(onError, this, errors);
+      onError();
+
+      // call(onError, this, errors);
       if (autoValidate) this.setInvalidState();
       return errors;
     }
@@ -82,14 +88,6 @@ const VForm = (function() {
       }, []);
     }
 
-    _bindEvents() {
-      this.element.addEventListener('submit', this._submitHandler.bind(this));
-      if (!this.props.autoValidate) return;
-      const handler = this._updateState.bind(this);
-      this.element.addEventListener('focusout', handler);
-      this.element.addEventListener('focusin', handler);
-    }
-
     _updateState(e) {
       this.validate();
       if (e.target === this.submit) return;
@@ -104,6 +102,14 @@ const VForm = (function() {
       e.preventDefault();
       this.validate();
       call(this.props.onSubmit, e, this);
+    }
+
+    _bindEvents() {
+      this.element.addEventListener('submit', this._submitHandler.bind(this));
+      if (!this.props.autoValidate) return;
+      const handler = this._updateState.bind(this);
+      this.element.addEventListener('focusout', handler);
+      this.element.addEventListener('focusin', handler);
     }
   }
 
@@ -121,4 +127,4 @@ const VForm = (function() {
   };
 
   return VForm;
-})();
+} ());

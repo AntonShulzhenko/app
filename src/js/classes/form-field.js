@@ -48,18 +48,19 @@ const FormField = (function() {
       this._isValid  = null;
       this._hasError = null;
 
-      if(this.element.matches(this.props.control)) {
+      if (this.element.matches(this.props.control)) {
         this.control = this.element;
       } else {
         this.control = qs(this.props.control, this.element);
       }
 
-      if(this.control !== this.element) {
+      if (this.control !== this.element) {
         this._setupErrorElement();
       }
 
       this._setupValidator();
       this._bindEvents();
+      // console.log(this);
     }
 
     isValid() {
@@ -84,19 +85,20 @@ const FormField = (function() {
     }
 
     setValidState() {
-      if(this._isValid) return;
+      if (this._isValid) return;
       this.element.classList.add(this.props.validClass);
       this._isValid = true;
     }
 
     setErrorState(message) {
-      if(this._hasError) return;
+      if (this._hasError) return;
+
       this.errors = message ? [].concat(message) : [];
       this.element.classList.add(this.props.errorClass);
 
-      if(this.errorElement) {
+      if (this.errorElement) {
         // this.errorElement.innerHTML = this.errors.join('<br>');
-        this.errorElement.textContent = this.errors[0];
+        this.errorElement.innerHTML = this.errors[0];
         this.element.appendChild(this.errorElement);
       }
 
@@ -115,7 +117,8 @@ const FormField = (function() {
         this.errorElement.innerHTML = '';
       }
 
-      this.errors    = [];
+      this.errors = [];
+
       this._isValid  = false;
       this._hasError = false;
     }
@@ -124,14 +127,14 @@ const FormField = (function() {
       const { validate, customValidator, errorMessages } = this.props;
       const type = typeof validate;
 
-      if(type === 'string' || Array.isArray(validate)) {
+      if (type === 'string' || Array.isArray(validate)) {
         [].concat(validate).forEach(str => {
           const { name, params } = parseRuleFromString(str);
           const fn = validationRules[name];
-          if(fn) {
+          if (fn) {
             this.rules.push({ name, fn, params });
           }
-          if(name === 'required') {
+          if (name === 'required') {
             this._required = true;
           }
         });
@@ -177,10 +180,10 @@ const FormField = (function() {
 
     _bindEvents() {
       const {
-        resetOnFocus,
-        validateOnInput,
-        validateOnBlur,
-        autoValidate
+          resetOnFocus,
+          validateOnInput,
+          validateOnBlur,
+          autoValidate
       } = this.props;
 
       if (!autoValidate) return;
@@ -210,4 +213,5 @@ const FormField = (function() {
   };
 
   return FormField;
-})();
+
+} ());

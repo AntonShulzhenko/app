@@ -1,4 +1,4 @@
-function login(ctx, next) {
+function login(ctx) {
   if (ctx.user) {
     return page.redirect('/profile');
   }
@@ -6,13 +6,12 @@ function login(ctx, next) {
   render('login');
 
   const loginForm = document.forms['login-form'];
-  const { email, password } = loginForm.elements;
+  const {email, password} = loginForm.elements;
+
   const emailFF = new FormField(email.parentNode, {
     validate: [
       'required',
-      'email',
-      'minLength[6]',
-      'maxLength[16]'
+      'email'
     ],
     resetOnFocus: true,
     validateOnBlur: true,
@@ -20,9 +19,7 @@ function login(ctx, next) {
   });
   const passwordFF = new FormField(password.parentNode, {
     validate: [
-      'required',
-      'minLength[6]',
-      'maxLength[20]'
+      'required'
     ],
     resetOnFocus: true,
     validateOnBlur: true,
@@ -39,15 +36,11 @@ function login(ctx, next) {
     emailFF.validate();
     passwordFF.validate();
 
-    if(emailFF.isValid() && passwordFF.isValid()) {
+    if (emailFF.isValid() && passwordFF.isValid()) {
       auth
-      .signInWithEmailAndPassword(email.value, password.value)
-      .then((success) => {
-        page.redirect ('/profile');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        .signInWithEmailAndPassword(email.value, password.value)
+        .then((success) => page.redirect('/profile'))
+        .catch((error) => console.log(error));
     }
   }
 }

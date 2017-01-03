@@ -37,6 +37,7 @@
   page('/signup', signup);
   page('/profile', profile);
   page('/profile/edit', profileEdit);
+  page('/add', add);
   page('*', render404);
 
   render('preloader');

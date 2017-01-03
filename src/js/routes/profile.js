@@ -1,4 +1,4 @@
-function profile(ctx, next) {
+function profile(ctx) {
   render('profile-show', {
     profile: ctx.user
   });
