@@ -16,7 +16,7 @@ class Editor {
     this.resetFilter       = this.resetFilter.bind(this);
     this.save              = this.save.bind(this);
     this._onFileChange     = this._onFileChange.bind(this);
-    this._onFilterChange    = this._onFilterChange.bind(this);
+    this._onFilterChange   = this._onFilterChange.bind(this);
     this._onUploadProgress = this._onUploadProgress.bind(this);
 
     this.triggerReset.style.display = 'none';
