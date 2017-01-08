@@ -47,3 +47,19 @@ fa-icon($code)
   max-width 600px
   margin auto
   padding 70px 0 20px
+
+#root
+  .header + div
+    opacity 0
+    transform translateY(-50px)
+    transition all 300ms ease-in-out
+
+#root.fade-in
+  .header + div
+    opacity 1
+    transform translateY(0)
+
+#root.fade-out
+  .header + div
+    opacity 0
+    transform translateY(50px)

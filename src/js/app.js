@@ -26,6 +26,8 @@
     rootElement.innerHTML = templates[tplName](data);
   }
 
+  rootElement.classList.add('fade-in');
+
   function render404() {
     render('404');
   }

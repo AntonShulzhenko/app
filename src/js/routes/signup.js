@@ -10,6 +10,8 @@ function signup(ctx, next) {
   const submitBtn       = qs('[type="submit"]', signupForm);
   const errorsContainer = qs('#errors', signupForm);
 
+  new Animate(signupForm);
+
   function renderError(errors = []) {
     return [].concat(errors).map(err => {
       return `

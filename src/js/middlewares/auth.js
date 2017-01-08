@@ -6,12 +6,26 @@ const unlockedPaths = [
 
 function auth(ctx, next) {
   const user = firebase.auth().currentUser;
-  // console.log(ctx, user);
+  rootElement.classList.remove('fade-in');
+  rootElement.classList.add('fade-out');
   if (user) {
     ctx.user = user.toJSON();
-    return next();
+    setTimeout(function() {
+      rootElement.classList.remove('fade-out');
+      setTimeout(function() {
+        rootElement.classList.add('fade-in');
+      }, 100);
+      next();
+    }, 300);
+    return;
   } else if (!unlockedPaths.includes(ctx.pathname)) {
     page.redirect('/login');
   }
-  next();
+  setTimeout(function() {
+    rootElement.classList.remove('fade-out');
+    setTimeout(function() {
+      rootElement.classList.add('fade-in');
+    }, 100);
+    next();
+  }, 300);
 }

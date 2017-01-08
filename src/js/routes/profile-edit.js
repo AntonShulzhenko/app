@@ -7,6 +7,11 @@ function profileEdit(ctx) {
   const NAME_VALIDATOR_RE  = /^\w+\s*\w*$/;
   const PHONE_VALIDATOR_RE = /\+\d{2} \(\d{3}\) \d{3}-\d{2}-\d{2}/;
 
+  new Animate(formElement, {
+    elementsTransitionDuration: 100,
+    elementsTimingFunction: 'cubic-bezier(0.21, 0.77, 0.35, 0.98)',
+    elementsTransformType: 'translateX'
+  });
 
   window.form = new VForm(formElement, {
     onSubmit: function() {

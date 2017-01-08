@@ -5,8 +5,13 @@ function login(ctx) {
 
   render('login');
 
+
   const loginForm = document.forms['login-form'];
   const {email, password} = loginForm.elements;
+
+  new Animate(loginForm, {
+    additionalElements: 'button[type="submit"]'
+  });
 
   const emailFF = new FormField(email.parentNode, {
     validate: [
