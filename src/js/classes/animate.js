@@ -40,7 +40,7 @@ class Animate {
 
     setTimeout(() => {
       this._show();
-    }, 350);
+    }, this.props.showDelay);
   }
 }
 
@@ -54,5 +54,6 @@ Animate.defaults = {
   elementsTransformStartValue: -10,
   elementsTransformEndValue: 0,
   elTransitionDuration: 200,
-  elTimingFunction: 'ease-in-out'
+  elTimingFunction: 'ease-in-out',
+  showDelay: 350
 };

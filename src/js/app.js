@@ -17,6 +17,7 @@
   //=require 'routes/*.js'
 
   const { location, history, templates } = window;
+  const body = qs('body');
   const rootElement = qs('#root');
 
   function render(tplName, data = {}) {
@@ -26,7 +27,7 @@
     rootElement.innerHTML = templates[tplName](data);
   }
 
-  rootElement.classList.add('fade-in');
+  new Color(body);
 
   function render404() {
     render('404');
