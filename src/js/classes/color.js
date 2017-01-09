@@ -17,7 +17,7 @@ class Color {
 
   _generateColor() {
     let r, g, b, alpha, color;
-    alpha = (this.props.alphaChanell).toFixed(1);
+    alpha = (this.props.alphaChannel).toFixed(1);
     r = this._generateNumber();
     g = this._generateNumber();
     b = this._generateNumber();
@@ -36,5 +36,5 @@ Color.defaults = {
   transitionDuration: 1000,
   transitionTimingFunction: 'ease-in-out',
   changeInterval: 2000,
-  alphaChanell: 0.1
+  alphaChannel: 0.1
 };
