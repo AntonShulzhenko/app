@@ -11,8 +11,7 @@ class Color {
   }
 
   _generateNumber() {
-    let number = Math.round(Math.random() * 1000);
-    (number > 255) ? number = Math.round(Math.random() * 100) : number;
+    let number = Math.floor(Math.random() * (256 - 0) + 0);
     return number;
   }
 
