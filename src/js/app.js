@@ -1,15 +1,17 @@
 'use strict';
-(() => {
-  // Firebase Initialization
-  const firebaseConfig = {
-    apiKey: 'AIzaSyDDhvBn7pjXjh0I8o5SuKOhN4s7I_p0wZ8',
-    authDomain: 'insta-294e1.firebaseapp.com',
-    databaseURL: 'https://insta-294e1.firebaseio.com',
-    storageBucket: 'insta-294e1.appspot.com',
-    messagingSenderId: '230889605114'
-  };
 
-  firebase.initializeApp(firebaseConfig);
+(function() {
+
+  //=require 'firebase.config.js'
+
+  try {
+    firebase.initializeApp(firebaseConfig || {});
+  } catch (err) {
+    alert(
+      `Please, add src/js/firebase.config.js file with the following content:
+      "const firebaseConfig = { ... };"`
+    );
+  }
 
   //=require 'lib/*.js'
   //=require 'classes/*.js'
@@ -17,17 +19,21 @@
   //=require 'routes/*.js'
 
   const { location, history, templates } = window;
-  const body = qs('body');
   const rootElement = qs('#root');
-
-  function render(tplName, data = {}) {
-    const user = firebase.auth().currentUser;
-    const userData = user ? user.toJSON() : null;
-    data = Object.assign(data, { user: userData });
-    rootElement.innerHTML = templates[tplName](data);
-  }
+  const body = qs('body');
 
   new Color(body);
+
+  /**
+   * Render template with given name
+   *
+   * @param  {string}      - Template name.
+   * @param  {...[Object]} - One or more contexts.
+   * @return {Void}
+   */
+  function render(tplName, ...data) {
+    rootElement.innerHTML = templates[tplName](Object.assign({}, ...data));
+  }
 
   function render404() {
     render('404');
@@ -50,4 +56,5 @@
     page();
     unsubsribe();
   });
-})();
+
+} ());

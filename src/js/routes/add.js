@@ -1,7 +1,10 @@
 function add(ctx, next) {
-  render('add', {
-    filters: Editor.FILTERS
-  });
+  render('add', ctx, { filters: Editor.FILTERS });
 
-  new Editor('#editor', {});
+  new Editor('#editor', {
+    currentUser: ctx.user,
+    onSave: () => {
+      page.redirect('/');
+    }
+  });
 }

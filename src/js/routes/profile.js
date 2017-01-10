@@ -1,9 +1,8 @@
-function profile(ctx) {
-  render('profile-show', {
-    profile: ctx.user
-  });
+function profile(ctx, next) {
+  render('profile-show', ctx);
 
   new Animate('.profile', {
-    additionalElements: ['.profile__pic', '.profile__name', 'a.btn']
+    additionalElements: ['.profile__pic', '.profile__name', 'a.btn'],
+    showDelay: 100
   });
 }
