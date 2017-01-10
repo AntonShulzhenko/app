@@ -145,7 +145,10 @@ class Editor {
   }
 
   _onFilterClick(e) {
-    // TODO
+    const target = e.delegateTarget;
+    const { filter } = target.dataset;
+    if(!filter) return;
+    this.applyFilter(filter);
   }
 
   _onUploadProgress(snapshot) {
@@ -154,7 +157,14 @@ class Editor {
   }
 
   _highlightActiveFilter() {
-    // TODO
+    const { activeClass } = this.props;
+    const prevActive = qs(`.${activeClass}`, this.filtersContainer);
+    const nextActive = qs(`[data-filter="${this.filter}"]`, this.filtersContainer);
+
+    if(prevActive) prevActive.classList.remove(`${activeClass}`);
+    if(nextActive) nextActive.classList.add(`${activeClass}`);
+
+    this.triggerReset.style.display = '';
   }
 
   _toggleBusyState() {
