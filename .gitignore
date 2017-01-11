@@ -30,3 +30,4 @@ node_modules
 bower_components
 public
 src/js/firebase.config.js
+cors.json

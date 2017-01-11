@@ -57,11 +57,13 @@ class Post {
       return console.log(`Entry has no comment with id ${id}`);
     }
     if (userId !== comment.authorId) {
-      return alert('Only author of comment can delete it');
+      return bootbox.alert('Only author of comment can delete it');
     }
-    if (confirm('Are you sure you want to delete this comment?')) {
-      this.dbRef.child(`comments/${id}`).remove().catch(defaultErrorHandler);
-    }
+    bootbox.confirm('Are you sure you want to delete this comment?', (result) => {
+      if (result) {
+        this.dbRef.child(`comments/${id}`).remove().catch(defaultErrorHandler);
+      }
+    });
   }
 
   toggleLike() {
@@ -89,23 +91,25 @@ class Post {
       return console.log('Only owner can delete this post');
     }
 
-    if (!confirm('Are you sure?')) {
-      return;
-    }
+    bootbox.confirm('Are you sure?', (result) => {
+      if (!result) {
+        return;
+      }
 
-    // remove all listeners from db reference
-    this.dbRef.off();
+      // remove all listeners from db reference
+      this.dbRef.off();
 
-    firebase.Promise.all([
-      // remove entry in database
-      this.dbRef.remove(),
-      // delete image file from storage
-      firebase.storage().ref(this.data.storagePath).delete()
-    ])
-    .then(() => {
-      this.element.parentNode.removeChild(this.element);
-    })
-    .catch(defaultErrorHandler);
+      firebase.Promise.all([
+        // remove entry in database
+        this.dbRef.remove(),
+        // delete image file from storage
+        firebase.storage().ref(this.data.storagePath).delete()
+      ])
+      .then(() => {
+        this.element.parentNode.removeChild(this.element);
+      })
+      .catch(defaultErrorHandler);
+    });
   }
 
   _setupDomElement() {
@@ -163,6 +167,28 @@ class Post {
 
     delegate(this.element, 'click', '.post__like', this.toggleLike);
     delegate(this.element, 'click', '.post__delete', this.delete);
+
+    delegate(this.element, 'click', 'img', this.downloadImage);
+  }
+
+  downloadImage(e) {
+    const target = e.delegateTarget;
+    const httpsRef = firebase.storage().refFromURL(target.src);
+    console.log(httpsRef);
+
+    httpsRef.getDownloadURL().then(function(url) {
+      console.log(url);
+
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      xhr.onload = function(event) {
+        var blob = xhr.response;
+      };
+      xhr.open('GET', url);
+      xhr.send();
+    }).catch(function(error) {
+      console.log('error');
+    });
   }
 }
 

@@ -7,6 +7,7 @@ function main(ctx) {
 
   const feed = qs('#feed');
   const dbRef = firebase.database().ref();
+  const storage = firebase.storage();
 
   dbRef
     .child('posts')
@@ -17,6 +18,12 @@ function main(ctx) {
       sortBy(entries, 'created').forEach(entrie => {
         const post = new Post(entrie, { currentUser: ctx.user });
         feed.insertBefore(post.element, feed.firstElementChild);
+        new Animate(feed, {
+          elements: '.post',
+          showDelay: 100,
+          elementsDelay: 300,
+          elementsTransitionDuration: 300
+        });
       });
     });
 }
