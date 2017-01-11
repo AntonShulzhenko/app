@@ -29,6 +29,7 @@ class Post {
         isOwner: this.data.author === this.currentUser.uid
       })
     );
+    this.downloadImage();
     console.log(this);
     console.timeEnd('render');
   }
@@ -167,18 +168,14 @@ class Post {
 
     delegate(this.element, 'click', '.post__like', this.toggleLike);
     delegate(this.element, 'click', '.post__delete', this.delete);
-
-    delegate(this.element, 'click', 'img', this.downloadImage);
   }
 
-  downloadImage(e) {
-    const target = e.delegateTarget;
+  downloadImage() {
+    const target = qs('.post__img', this.element);
+    const link = qs('.download-image', this.element);
     const httpsRef = firebase.storage().refFromURL(target.src);
-    console.log(httpsRef);
 
     httpsRef.getDownloadURL().then(function(url) {
-      console.log(url);
-
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'blob';
       xhr.onload = function(event) {
@@ -186,8 +183,10 @@ class Post {
       };
       xhr.open('GET', url);
       xhr.send();
+      link.setAttribute('href', url);
     }).catch(function(error) {
-      console.log('error');
+      bootbox.alert('error');
+      console.log(error);
     });
   }
 }
