@@ -30,6 +30,7 @@ class Post {
       })
     );
     this.downloadImage();
+    new Color('.post__header');
     console.log(this);
     console.timeEnd('render');
   }

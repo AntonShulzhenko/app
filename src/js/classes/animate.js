@@ -6,6 +6,7 @@ class Animate {
 
     this.checkElem();
     this.render();
+    console.log(this.elements);
   }
 
   checkElem() {
@@ -20,7 +21,7 @@ class Animate {
       el.style.transition
         = `all ${this.props.elementsTransitionDuration}ms ${this.props.elTimingFunction}`;
       el.style.transform
-        = `${this.props.elementsTransformType}(${this.props.elementsTransformStartValue}px)`;
+        = `${this.props.elementsTransformType}(${this.props.elementsTransformStartValue})`;
     });
   }
 
@@ -30,7 +31,7 @@ class Animate {
       setTimeout(() => {
         elem.style.opacity = 1;
         elem.style.transform
-          = `${this.props.elementsTransformType}(${this.props.elementsTransformEndValue}px)`;
+          = `${this.props.elementsTransformType}(${this.props.elementsTransformEndValue})`;
       }, this.props.elementsDelay * (i + 1));
     });
   }
@@ -51,8 +52,8 @@ Animate.defaults = {
   elementsTransitionDuration: 200,
   elementsTimingFunction: 'ease-in-out',
   elementsTransformType: 'translateY',
-  elementsTransformStartValue: -10,
-  elementsTransformEndValue: 0,
+  elementsTransformStartValue: '-10px',
+  elementsTransformEndValue: '0',
   elTransitionDuration: 200,
   elTimingFunction: 'ease-in-out',
   showDelay: 350

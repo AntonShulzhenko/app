@@ -9,7 +9,7 @@ function auth(ctx, next) {
   rootElement.classList.remove('fade-in');
   rootElement.classList.add('fade-out');
 
-  render('preloader');
+  // render('preloader');
 
   if (user) {
     firebase

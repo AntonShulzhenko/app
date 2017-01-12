@@ -7,7 +7,6 @@ function main(ctx) {
 
   const feed = qs('#feed');
   const dbRef = firebase.database().ref();
-  const storage = firebase.storage();
 
   dbRef
     .child('posts')
